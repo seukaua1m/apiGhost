@@ -1,9 +1,16 @@
 import express from "express";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
+import cors from "cors";
 
 dotenv.config();
 const app = express();
+
+app.use(cors({
+    origin: "*", // ou "http://127.0.0.1:5500" para restringir
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
 app.use(express.json());
 
