@@ -3,25 +3,40 @@ import fetch from "node-fetch";
 import dotenv from "dotenv";
 
 dotenv.config();
-
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-// Exemplo de rota proxy
-app.get("/api/dados", async (req, res) => {
+app.use(express.json());
+
+// Endpoint para criar transação PIX
+app.post("/pix", async (req, res) => {
   try {
-    const resposta = await fetch("https://api.exemplo.com/endpoint", {
+    const body = {
+      name: req.body.name,
+      email: req.body.email,
+      cpf: req.body.cpf,
+      phone: req.body.phone,
+      paymentMethod: "PIX",
+      amount: req.body.amount, // valor em centavos
+      traceable: true,
+      items: req.body.items
+    };
+
+    const response = await fetch("https://app.ghostspaysv1.com/api/v1/transaction.purchase", {
+      method: "POST",
       headers: {
-        "X-Public-Key": process.env.PUBLIC_KEY,
-        "X-Secret-Key": process.env.SECRET_KEY
-      }
+        "Content-Type": "application/json",
+        "Authorization": process.env.SECRET_KEY
+      },
+      body: JSON.stringify(body)
     });
 
-    const dados = await resposta.json();
-    res.json(dados);
-  } catch (err) {
-    res.status(500).json({ erro: "Falha ao buscar dados" });
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error("Erro ao criar PIX:", error);
+    res.status(500).json({ error: "Falha ao criar PIX" });
   }
 });
 
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
