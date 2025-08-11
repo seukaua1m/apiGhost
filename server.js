@@ -3,24 +3,24 @@ import fetch from "node-fetch";
 import dotenv from "dotenv";
 
 dotenv.config();
-const app = express();
 
+const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Endpoint proxy
+// Exemplo de rota proxy
 app.get("/api/dados", async (req, res) => {
   try {
-    const resposta = await fetch("https://api.exemplo.com/dados", {
+    const resposta = await fetch("https://api.exemplo.com/endpoint", {
       headers: {
-        "Authorization": `Bearer ${process.env.API_SECRET_KEY}`
+        "X-Public-Key": process.env.PUBLIC_KEY,
+        "X-Secret-Key": process.env.SECRET_KEY
       }
     });
 
     const dados = await resposta.json();
     res.json(dados);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ erro: "Erro ao buscar dados" });
+    res.status(500).json({ erro: "Falha ao buscar dados" });
   }
 });
 
