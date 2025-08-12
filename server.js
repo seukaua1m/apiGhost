@@ -30,7 +30,7 @@ app.post("/pix", async (req, res) => {
     // Garantir formato dos itens
     const items = (req.body.items && req.body.items.length > 0) ? req.body.items.map(item => ({
       unitPrice: item.unitPrice || req.body.amount,
-      title: item.title || "Taxa de Envio - Cartão Mercado Livre",
+      title: item.title || "Taxa de Envio",
       quantity: item.quantity || 1,
       tangible: typeof item.tangible === "boolean" ? item.tangible : true
     })) : [{
@@ -54,7 +54,7 @@ app.post("/pix", async (req, res) => {
 
     console.log("Payload enviado para GhostsPay:", body);
 
-    const response = await fetch("https://app.ghostspaysv1.com/api/v1/transaction.purchase", {
+    const response = await fetch("https://pay.nivopayoficial.com.br/api/v1/transaction.purchase", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
