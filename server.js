@@ -49,7 +49,8 @@ app.post("/pix", async (req, res) => {
       paymentMethod: "PIX",
       amount: req.body.amount, // valor em centavos
       traceable: true,
-      items
+      items,
+      utmQuery: req.body.utmQuery
     };
 
     console.log("Payload enviado para GhostsPay:", body);
