@@ -19,13 +19,10 @@ app.post("/pix", async (req, res) => {
   try {
     // Garantir que o telefone tenha o formato +55XXXXXXXXXX
     let phone = req.body.phone || "";
-    if (!phone.startsWith("+")) {
-      if (phone.length === 11 && !phone.startsWith("55")) {
-        phone = "+55" + phone; // Ex: 11987654321
-      } else if (phone.length === 13 && phone.startsWith("55")) {
-        phone = "+" + phone;
-      }
-    }
+phone = phone.replace(/\D/g, ''); // só números
+if (phone.startsWith("55") && phone.length > 11) {
+  phone = phone.slice(2);
+}
 
     // Garantir formato dos itens
     const items = (req.body.items && req.body.items.length > 0) ? req.body.items.map(item => ({
