@@ -27,12 +27,12 @@ if (phone.startsWith("55") && phone.length > 11) {
     // Garantir formato dos itens
     const items = (req.body.items && req.body.items.length > 0) ? req.body.items.map(item => ({
       unitPrice: item.unitPrice || req.body.amount,
-      title: item.title || "Taxa de Envio",
+      title: item.title || "Ebook - 500 receitas sem glúten",
       quantity: item.quantity || 1,
       tangible: typeof item.tangible === "boolean" ? item.tangible : true
     })) : [{
       unitPrice: req.body.amount,
-      title: "Taxa de Envio - Cartão Mercado Livre",
+      title: "Ebook - 500 receitas sem glúten",
       quantity: 1,
       tangible: true
     }];
